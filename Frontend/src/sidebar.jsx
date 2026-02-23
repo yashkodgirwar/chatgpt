@@ -1,17 +1,82 @@
 import "./SidebarStyle.css";
+import { useContext, useEffect } from "react";
+import {MyContext} from "./MyContext";
+import{v1 as uuidv1} from "uuid";
+
 
 
 function Sidebar(){
+   const {allThrads, setAllThreads,currThread,setNewChat,setPrompt,setReply,setPrevChats}=useContext(MyContext)
+
+   const getAllthread=async()=>{
+      try{
+         const response =await fetch("https://localhost:8080/api/Thread");
+         const res= await response.json();
+         const filterdata= res.map(thread=>({threadId: thread.threadId,title:thread.title}));
+         setAllThreads(filterdata)
+      }catch(err){
+         console.log(err);
+      }
+
+   };
+    useEffect(()=>{
+      getAllthread()
+    },[currThread])
+
+    const createNewchat=()=>{
+      setNewChat(true);
+      setPrompt("");
+      setReply(null);
+      setCurrThreadId(uuidv1());
+      setPrevChats([]);
+
+
+    }
+     const changeThreadId=async(newthreadId)=>{
+        setCurrThreadId(newthreadId);
+        try{
+         const response=await fetch(`https://localhost:800/api/thread/${newthreadId}`);
+         const res=await response.json();
+         setPrevChats(res);
+         setNewChat(false);
+         setReply(null);
+        }catch(err){
+          console.log(err);
+        }
+     }
+     const deleteThread=async(ThreadId)=>{
+      try{
+         const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{method:"DELETE"})
+         const res=await response.json();
+
+         //updated thread re-render for avoiding refresh part
+         setAllThreads(prev=>prev.filter(thread=>{thread.threadId !== threadId}))
+          if(threadId===currThreadId){
+            createNewchat();
+          }
+      }catch(err){
+
+      }
+     }
     return (
       <section className="section">
-        <button>
+        <button onClick={createNewchat}>
            <img  className="logo"src="/blacklogo.png" />
            <span><i class="fa-solid fa-pen-to-square"></i></span>
         </button>
          <ul className="history">
-            <li>history1</li>
-            <li>history2</li>
-            <li>hostory3</li>
+           {
+            allThrads?.map((thread,idx)=>(
+               <li key={idx} onClick={()=>changeThreadId(thread.threadId)}
+               className={thread.threadId===currThreadId?"highlighted":"" }>{thread.title}
+               
+               <i className="fa-regular fa-trash-can"
+               onClick={(e)=>{
+                  e.stopPropagation(); //stop event bubbling -- so parent not affected
+                  deletethread(thread.threadId)
+               }}></i></li>
+            ))
+           }
 
          </ul>
 

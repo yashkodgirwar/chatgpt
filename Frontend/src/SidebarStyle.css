@@ -69,3 +69,23 @@ button:hover{
 .section{
     background-color: rgb(23, 22, 22);
 }
+.fa-trash-can{
+ opacity: 0;
+ position: absolute;
+ right: 0;
+
+}
+
+.history li:hover.fa-trash-can{
+    opacity: 1;
+    color: #fff;
+}
+
+.fa-trash-can:hover{
+    color: #d01a1a !important;
+}
+
+.highlighted{
+    background-color: rgb(180,180,180,0.1);
+    border-radius: 10px;
+}

@@ -123,3 +123,20 @@ input:focus{
     background-color: rgba(180, 180, 180, 0.1);
     border-radius: 6px;
 }
+.dropDown{
+    position: absolute;
+    top:4rem;
+    right:4rem;
+    width: 150px;
+
+    background-color:#323232;
+    padding:0.3rem 0.5rem;
+    text-align: left;
+    z-index:1000;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+
+}
+.dropDownItem{
+    background-color: rgba(180, 180, 180, 0.1);
+    border-radius: 6px;
+}
