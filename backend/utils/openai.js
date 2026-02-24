@@ -1,5 +1,5 @@
 import "dotenv/config";
-const getOpenAIAPIResponse=asyn(message)=>{
+const getOpenAIAPIResponse=async(message)=>{
     const option={
         method:"POST",
         headers:{
@@ -25,5 +25,6 @@ const getOpenAIAPIResponse=asyn(message)=>{
         console.log(err);
 
     }
-    export default getOpenAIAPIResponse;
-}
+    
+};
+export default getOpenAIAPIResponse;

@@ -1,7 +1,7 @@
 import express from "express";
-import thread from "../models/Thread.js"
+// import thread from "../models/Thread.js"
 import Thread from "../models/Thread.js";
-import getOpenAIAPIResponse from "../utils/openai";
+import getOpenAIAPIResponse from "../utils/openai.js";
 const router=express.Router();
 
 router.post("/test", async(req, res)=>{
@@ -36,7 +36,7 @@ router.get("/thread/:threadId", async(req,res)=>{
     const {threadId}=req.params;
 
   try{
-   let thread= await thread.findOne({threadId});
+   let thread= await Thread.findOne({threadId});
     if(!thread){
         res.status(404).json({error:"thread not found"});
 

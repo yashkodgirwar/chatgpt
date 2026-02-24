@@ -9,13 +9,13 @@ import {v1 as uuid} from "uuid";
 function App() {
   const [prompt, setPrompt]= useState("");
   const [reply,setReply]=useState(null);
-  const [currThread, setCurrThreadId]=useState(uuid);
+  const [currThread, setCurrThreadId]=useState(uuid());
   const [prevChats,setPreviousChats]=useState([]); //store all previous chats of current thread
   const [newChat, setNewChat]= useState(true);
   const [allThrads,setAllThreads]=useState([]);
   const providerValues={
     prompt,setPrompt,
-    reply,setPrompt,
+    reply,setReply,
     currThread,setCurrThreadId,
     newChat,setNewChat,
     prevChats,setPreviousChats,

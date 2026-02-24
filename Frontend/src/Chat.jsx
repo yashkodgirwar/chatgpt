@@ -1,6 +1,6 @@
 import "./Chat.css";
 import { useContext, useState,useEffect } from "react";
-import { MyContext } from "./MyContext";
+import { Mycontext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
@@ -8,7 +8,7 @@ import "highlight.js/styles/github-dark.css";
 //react-markdown for displaying markdown
 // react-highlight syantax highlighting the code
 function Chat(){
-    const {newChat,prevChats}= useContext{MyContext};
+  const { newChat, prevChats,reply } = useContext(Mycontext);
     const [latestReply,setLatestReply]=useState(null);
 
     useEffect(()=>{
@@ -19,12 +19,24 @@ function Chat(){
          //latestReply separate=>typing effect create
          if(!prevChats?.length) return
          const content=reply.split(" "); // individual word -word 
-         const idx=0;
-         const interval=setInterval(()=>{
-            setLatestReply(content.slice(0,idx+1).join(" "));
-            idx++;
-            if(idx>=clearInterval(interval));
-         },40);
+//          const idx=0;
+//          const interval=setInterval(()=>{
+//             setLatestReply(content.slice(0,idx+1).join(" "));
+//             idx++;
+//              if (idx >= content.length) {
+//     clearInterval(interval);
+//   }
+//          },40);
+let idx = 0;
+
+const interval = setInterval(() => {
+  setLatestReply(content.slice(0, idx + 1).join(" "));
+  idx++;
+
+  if (idx >= content.length) {
+    clearInterval(interval);
+  }
+}, 40);
     },[prevChats,reply])
     return (
         <>
