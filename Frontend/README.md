@@ -1,16 +1,142 @@
-# React + Vite
+🤖 ChatGPT Clone – AI Powered Chat Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern AI-powered chat application built using React + Vite that integrates with the OpenAI API to generate intelligent responses in real time.
 
-Currently, two official plugins are available:
+This project replicates core ChatGPT functionality including a dynamic chat interface, sidebar layout, global state management, and API-based AI responses.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Features Implemented
 
-## React Compiler
+💬 Interactive AI Chat Interface
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🧠 OpenAI API Integration
 
-## Expanding the ESLint configuration
+📂 Sidebar UI Layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🔄 Global State Management using React Context API
+
+⚡ Fast Development with Vite + HMR
+
+🎨 Clean and Responsive UI
+
+🧩 Modular Component-Based Architecture
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🛠️ Tech Stack
+Frontend
+
+React
+
+Vite
+
+Context API
+
+CSS
+
+API Integration
+
+OpenAI API
+
+Custom API utility (openai.js)
+
+Chat handler logic (chat.js)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+📁 Project Structure
+
+chatgpt/
+│
+├── src/
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── MyContext.jsx
+│   │
+│   ├── Chat.jsx
+│   ├── ChatWindow.jsx
+│   ├── Sidebar.jsx
+│   │
+│   ├── App.css
+│   ├── Chat.css
+│   ├── ChatWindow.css
+│   ├── SidebarStyle.css
+│   │
+│   ├── openai.js
+│   ├── chat.js
+│
+├── package.json
+├── vite.config.js
+└── README.md
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+⚙️ Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/yashkodgirwar/chatgpt.git
+cd chatgpt
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Setup Environment Variables
+
+Create a .env file in the root directory:
+
+VITE_OPENAI_API_KEY=your_openai_api_key_here
+
+⚠️ Important: Never push your API key to GitHub.
+
+
+4️⃣ Run the Project
+npm run dev
+
+App runs on:
+
+http://localhost:5173
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🧠 How It Works
+
+1.User types a prompt in the chat input
+
+2.Message is passed via Context API
+
+3.chat.js processes the request
+
+4.openai.js sends request to OpenAI API
+
+5.Response is received
+
+6.UI updates dynamically with AI response
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🔐 Security Note
+
+Currently, API calls are handled from frontend using environment variables.
+
+⚠️ For production:
+
+Use backend proxy
+
+Hide API key on server side
+
+Add rate limiting
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+🎯 What This Project Demonstrates
+
+Real-world API integration
+
+React Context API usage
+
+Component-based architecture
+
+Environment variable management
+
+Modern frontend tooling with Vite
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+👨‍💻 Author
+
+Yash Kodgirwar
+B.Tech IT | Full Stack Developer | Cloud Enthusiast
