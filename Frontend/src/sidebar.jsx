@@ -6,11 +6,21 @@ import{v1 as uuidv1} from "uuid";
 
 
 function Sidebar(){
-   const {allThrads, setAllThreads,currThread,setNewChat,setPrompt,setReply,setPrevChats}=useContext(Mycontext)
+   // const {allThrads, setAllThreads,currThread,setNewChat,setPrompt,setReply,setPrevChats}=useContext(Mycontext)
+   const {
+  allThrads,
+  setAllThreads,
+  currThreadId,        
+  setCurrThreadId,    
+  setNewChat,
+  setPrompt,
+  setReply,
+  setPreviousChats     
+} = useContext(Mycontext);
 
    const getAllthread=async()=>{
       try{
-         const response =await fetch("https://localhost:8080/api/Thread");
+         const response =await fetch("http://localhost:8080/api/Thread");
          const res= await response.json();
          const filterdata= res.map(thread=>({threadId: thread.threadId,title:thread.title}));
          setAllThreads(filterdata)
@@ -21,7 +31,7 @@ function Sidebar(){
    };
     useEffect(()=>{
       getAllthread()
-    },[currThread])
+    },[currThreadId])
 
     const createNewchat=()=>{
       setNewChat(true);
@@ -35,7 +45,7 @@ function Sidebar(){
      const changeThreadId=async(newthreadId)=>{
         setCurrThreadId(newthreadId);
         try{
-         const response=await fetch(`https://localhost:800/api/thread/${newthreadId}`);
+         const response=await fetch(`http://localhost:8080/api/thread/${newthreadId}`);
          const res=await response.json();
          setPrevChats(res);
          setNewChat(false);
@@ -44,13 +54,17 @@ function Sidebar(){
           console.log(err);
         }
      }
-     const deleteThread=async(ThreadId)=>{
+     const deleteThread=async(threadId)=>{
       try{
-         const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{method:"DELETE"})
+         // const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{method:"DELETE"})
+          const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{
+  method:"DELETE"
+})
          const res=await response.json();
 
          //updated thread re-render for avoiding refresh part
-         setAllThreads(prev=>prev.filter(thread=>{thread.threadId !== threadId}))
+         // setAllThreads(prev=>prev.filter(thread=>{thread.threadId !== threadId}))
+         setAllThreads(prev => prev.filter(thread => thread.threadId !== threadId))
           if(threadId===currThreadId){
             createNewchat();
           }
@@ -81,7 +95,7 @@ function Sidebar(){
          </ul>
 
          <div className="sign">
-            <p> By Yash Kofgirwar &hearts;</p>
+            <p> By Yash Kodgirwar &hearts;</p>
          </div>
 
       </section>
