@@ -129,7 +129,7 @@ const handleprofileclick= ()=>{
     return(
         <div className="chatwindow">
             <div className="navbar">
-                <span> Sigmagpt <i className="fa-solid fa-angle-down"></i> </span>
+                <span> Sigmagpt 4o-mini  <i className="fa-solid fa-angle-down"></i> </span>
                  <div className="userIconDiv" onClick={handleprofileclick}>
                    <span className="userIcon"><i className="fa-solid fa-user"></i></span>
                  </div>
