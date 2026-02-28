@@ -69,23 +69,71 @@ button:hover{
 .section{
     background-color: rgb(23, 22, 22);
 }
-.fa-trash-can{
+/* .fa-trash-can{
  opacity: 0;
  position: absolute;
  right: 0;
 
-}
+} */
 
-.history li:hover.fa-trash-can{
+/* .history li:hover .fa-trash-can{
     opacity: 1;
     color: #fff;
-}
+} */
 
-.fa-trash-can:hover{
-    color: #d01a1a !important;
-}
 
 .highlighted{
     background-color: rgb(180,180,180,0.1);
     border-radius: 10px;
+}
+
+/* .history li {
+    position: relative;
+    margin-bottom: 11.5px;
+}
+
+.fa-trash-can {
+    opacity: 0;
+    position: absolute;
+    right: 0.5rem;
+    cursor: pointer;
+    
+}
+
+.history li:hover .fa-trash-can {
+    opacity: 1;
+    color: #fff;
+} */
+
+.history li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.thread-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.delete-icon {
+    opacity: 0;
+    margin-left: 10px;
+    transition: 0.2s ease;
+}
+
+/* show icon when hovering whole li */
+.history li:hover .delete-icon {
+    opacity: 1;
+    color: white;
+}
+
+/* turn red when hovering icon */
+.history li .delete-icon:hover {
+    color: #e80a0a !important;
 }

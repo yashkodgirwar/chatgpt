@@ -39,17 +39,33 @@ router.get("/thread/:threadId", async(req,res)=>{
   try{
    let thread= await Thread.findOne({threadId});
     if(!thread){
-        res.status(404).json({error:"thread not found"});
+        return res.json([]);
 
     }
-    res.json(thread.message);
+    return res.json(thread.messages || []);
   }catch(err){
     console.log(err);
     res.status(500).json({error:"Failed to Fetch threads"});
 
   }
 })
+// router.get("/thread/:threadId", async (req, res) => {
+//   const { threadId } = req.params;
 
+//   try {
+//     let thread = await Thread.findOne({ threadId });
+
+//     if (!thread) {
+//       return res.json([]);   // always return array
+//     }
+
+//     return res.json(thread.messages || []);  // ✅ FIXED
+
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ error: "Failed to Fetch threads" });
+//   }
+// });
 
 router.delete("/thread/:threadId" ,async(req,res )=>{
     const {threadId}=req.params;
