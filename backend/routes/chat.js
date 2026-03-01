@@ -67,23 +67,43 @@ router.get("/thread/:threadId", async(req,res)=>{
 //   }
 // });
 
-router.delete("/thread/:threadId" ,async(req,res )=>{
-    const {threadId}=req.params;
-    try{
-        const deletethread=await Thread.findOne({threadId});
-        if(!threadId){
-             res.status(404).json({error:"thread not found"});
+// router.delete("/thread/:threadId" ,async(req,res )=>{
+//     const {threadId}=req.params;
+//     try{
+//          const deletedThread = await Thread.findOneAndDelete({ threadId });
+//         if(!deletedThread){
+//              res.status(404).json({error:"thread not found"});
 
-        }
-         res.status(200).json({success:"Thread is deleted successfully"});
+//         }
+//          res.status(200).json({success:"Thread is deleted successfully"});
 
-    }catch(err){
-        console.log(err);
-    res.status(500).json({error:"Failed to Fetch threads"});
+//     }catch(err){
+//         console.log(err);
+//     res.status(500).json({error:"Failed to Fetch threads"});
 
+//     }
+// })
+router.delete("/thread/:threadId", async (req, res) => {
+  try {
+    const id = req.params.threadId;
+
+    console.log("Deleting:", id);
+
+    const deleted = await Thread.deleteOne({ threadId: id });
+
+    console.log("Mongo result:", deleted);
+
+    if (deleted.deletedCount === 0) {
+      return res.status(404).json({ error: "Thread not found" });
     }
-})
 
+    return res.status(200).json({ success: "Deleted successfully" });
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
 // router.post("/chat",async(req,res)=>{
 //     const {threadId,message}=req.body;
 //     if(!threadId || !message){
@@ -111,6 +131,46 @@ router.delete("/thread/:threadId" ,async(req,res )=>{
 //        res.status(500).json({error:" Internal server Error"});
 //     }
 // })
+// router.post("/chat", async (req, res) => {
+//   const { threadId, message } = req.body;
+
+//   if (!threadId || !message) {
+//     return res.status(400).json({ error: "Missing required fields" });
+//   }
+
+//   try {
+//     let thread = await Thread.findOne({ threadId });
+
+//     if (!thread) {
+//       thread = new Thread({
+//         threadId,
+//         title: message,
+//         messages: [{ role: "user", content: message }],
+//       });
+//     } else {
+//       thread.messages.push({ role: "user", content: message });
+//     }
+
+//     const assistantReply = await getOpenAIAPIResponse(message);
+
+//     thread.messages.push({
+//       role: "assistant",
+//       content: assistantReply,
+//     });
+
+//     thread.updatedAt = new Date();
+//     await thread.save();
+
+//     res.json({ reply: assistantReply });
+
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
+
+
 router.post("/chat", async (req, res) => {
   const { threadId, message } = req.body;
 
@@ -121,15 +181,12 @@ router.post("/chat", async (req, res) => {
   try {
     let thread = await Thread.findOne({ threadId });
 
+    // 🔴 Important change
     if (!thread) {
-      thread = new Thread({
-        threadId,
-        title: message,
-        messages: [{ role: "user", content: message }],
-      });
-    } else {
-      thread.messages.push({ role: "user", content: message });
+      return res.status(404).json({ error: "Thread does not exist" });
     }
+
+    thread.messages.push({ role: "user", content: message });
 
     const assistantReply = await getOpenAIAPIResponse(message);
 
@@ -148,10 +205,6 @@ router.post("/chat", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-
-
 
 
 

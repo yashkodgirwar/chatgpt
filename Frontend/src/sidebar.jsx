@@ -20,7 +20,7 @@ function Sidebar(){
 
    const getAllthread=async()=>{
       try{
-         const response =await fetch("http://localhost:8080/api/Thread");
+         const response =await fetch("http://localhost:8080/api/thread");
          const res= await response.json();
          const filterdata= res.map(thread=>({threadId: thread.threadId,title:thread.title}));
          setAllThreads(filterdata)
@@ -43,19 +43,36 @@ function Sidebar(){
 
 
     }
-     const changeThreadId=async(newthreadId)=>{
-        setCurrThreadId(newthreadId);
-        try{
-         const response=await fetch(`http://localhost:8080/api/thread/${newthreadId}`);
-         const res=await response.json();
-         // setPrevChats(res);
-         setPreviousChats(res);
-         // setNewChat(false);
-         setReply(null);
-        }catch(err){
-          console.log(err);
-        }
-     }
+    //  const changeThreadId=async(newthreadId)=>{
+    //     setCurrThreadId(newthreadId);
+    //      localStorage.setItem("currentThreadId", newthreadId);
+
+    //     try{
+    //      const response=await fetch(`http://localhost:8080/api/thread/${newthreadId}`);
+    //      const res=await response.json();
+    //      // setPrevChats(res);
+    //      setPreviousChats(res);
+    //      // setNewChat(false);
+    //      setReply(null);
+    //     }catch(err){
+    //       console.log(err);
+    //     }
+    //  }
+    const changeThreadId = async (newthreadId) => {
+  setCurrThreadId(newthreadId);
+  localStorage.setItem("currentThreadId", newthreadId);
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/thread/${newthreadId}`
+    );
+    const res = await response.json();
+    setPreviousChats(res);
+    setReply(null);
+  } catch (err) {
+    console.log(err);
+  }
+};
 //       const changeThreadId = async (newthreadId) => {
 //            console.log("Clicked thread:", newthreadId);   // 👈 add this
 //   setCurrThreadId(newthreadId);
@@ -106,23 +123,44 @@ function Sidebar(){
 
 
 
-     const deleteThread=async(threadId)=>{
-      try{
-         // const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{method:"DELETE"})
-          const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{
-  method:"DELETE"
-})
-         const res=  await response.text();
-         //updated thread re-render for avoiding refresh part
-         // setAllThreads(prev=>prev.filter(thread=>{thread.threadId !== threadId}))
-         setAllThreads(prev => prev.filter(thread => thread.threadId !== threadId))
-          if(threadId===currThreadId){
-            createNewchat();
-          }
-      }catch(err){
+//      const deleteThread=async(threadId)=>{
+//       try{
+//          // const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{method:"DELETE"})
+//           const response=await fetch(`http://localhost:8080/api/thread/${threadId}`,{
+//   method:"DELETE"
+// })
+//          const res=  await response.text();
+//          //updated thread re-render for avoiding refresh part
+//          // setAllThreads(prev=>prev.filter(thread=>{thread.threadId !== threadId}))
+//          setAllThreads(prev => prev.filter(thread => thread.threadId !== threadId))
+//           if(threadId===currThreadId){
+//             createNewchat();
+//           }
+//       }catch(err){
 
-      }
-     }
+//       }
+//      }
+
+
+const deleteThread = async (threadId) => {
+  console.log("Frontend sending threadId:", threadId);
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/thread/${threadId}`,
+      { method: "DELETE" }
+    );
+
+    console.log("Status:", response.status);
+
+    setAllThreads(prev =>
+      prev.filter(thread => thread.threadId !== threadId)
+    );
+
+  } catch (err) {
+    console.log(err);
+  }
+};
     return (
       <section className="sidebar">
         <button onClick={createNewchat}>
