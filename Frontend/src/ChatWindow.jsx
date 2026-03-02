@@ -186,12 +186,13 @@ const handleprofileclick= ()=>{
             </div>
             {
                 isOpen && 
-                <div className="dropdown">
-                    <div className="dropDownItem"><i className="fa-regular fa-gear"></i>Setting</div>
+                <div className="dropDown">
 
-                    <div className="dropDownItem"><i className="fa-solid fa-cloud-arrow-up"></i>Upgrade plan</div>
-                    
-                    <div className="dropDownItem"><i className="fa-regular fa-arrow-right-from-bracket"></i>Log out</div>
+                    <div className="dropDownItem">  <i className="fa-solid fa-gear"></i> Setting</div>
+                    <div className="dropDownItem"> <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan</div>
+                    <div className="dropDownItem"><i className="fa-solid fa-right-from-bracket"></i> Log out</div>
+
+
 
 
 
