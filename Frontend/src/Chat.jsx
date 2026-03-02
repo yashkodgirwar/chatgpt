@@ -11,33 +11,56 @@ function Chat(){
   const { newChat, prevChats,reply } = useContext(Mycontext);
     const [latestReply,setLatestReply]=useState(null);
 
-    useEffect(()=>{
-        if(reply === null){
-            setLatestReply(null); // means we load the prev chat so we do not want typing effect for that last reply
-            return;
-        }
-         //latestReply separate=>typing effect create
-         if(!prevChats?.length) return
-         const content=reply.split(" "); // individual word -word 
-//          const idx=0;
-//          const interval=setInterval(()=>{
-//             setLatestReply(content.slice(0,idx+1).join(" "));
-//             idx++;
-//              if (idx >= content.length) {
+//     useEffect(()=>{
+//         if(reply === null){
+//             setLatestReply(null); // means we load the prev chat so we do not want typing effect for that last reply
+//             return;
+//         }
+//          //latestReply separate=>typing effect create
+//          if(!prevChats?.length) return
+//         //  const content=reply.split(" "); // individual word -word 
+//         if (!reply) return;
+// const content = reply.split(" ");
+// //          const idx=0;
+// //          const interval=setInterval(()=>{
+// //             setLatestReply(content.slice(0,idx+1).join(" "));
+// //             idx++;
+// //              if (idx >= content.length) {
+// //     clearInterval(interval);
+// //   }
+// //          },40);
+// let idx = 0;
+
+// const interval = setInterval(() => {
+//   setLatestReply(content.slice(0, idx + 1).join(" "));
+//   idx++;
+
+//   if (idx >= content.length) {
 //     clearInterval(interval);
 //   }
-//          },40);
-let idx = 0;
-
-const interval = setInterval(() => {
-  setLatestReply(content.slice(0, idx + 1).join(" "));
-  idx++;
-
-  if (idx >= content.length) {
-    clearInterval(interval);
+// }, 40);
+//     },[prevChats,reply])
+useEffect(() => {
+  if (!reply || typeof reply !== "string") {
+    setLatestReply(null);
+    return;
   }
-}, 40);
-    },[prevChats,reply])
+
+  if (!prevChats?.length) return;
+
+  const content = reply.split(" ");
+  let idx = 0;
+
+  const interval = setInterval(() => {
+    setLatestReply(content.slice(0, idx + 1).join(" "));
+    idx++;
+
+    if (idx >= content.length) {
+      clearInterval(interval);
+    }
+  }, 40);
+
+}, [prevChats, reply]);
     return (
         <>
         {newChat && <h1> Start new Chat</h1>}

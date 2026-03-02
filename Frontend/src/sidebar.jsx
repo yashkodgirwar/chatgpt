@@ -29,20 +29,120 @@ function Sidebar(){
       }
 
    };
-    useEffect(()=>{
-      getAllthread()
-    },[]) //we remove currThreadId
+useEffect(() => {
+  const initialize = async () => {
+    const response = await fetch("http://localhost:8080/api/thread");
+    const res = await response.json();
 
-    const createNewchat=()=>{
-      setNewChat(true);
-      setPrompt("");
-      setReply(null);
-      setCurrThreadId(uuidv1());
-      // setPrevChats([]);
-      setPreviousChats([]);
+    const filterdata = res.map(thread => ({
+      threadId: thread.threadId,
+      title: thread.title
+    }));
 
+    setAllThreads(filterdata);
 
+    const savedId = localStorage.getItem("currentThreadId");
+
+    if (savedId) {
+      setCurrThreadId(savedId);
+
+      const threadResponse = await fetch(
+        `http://localhost:8080/api/thread/${savedId}`
+      );
+
+      const threadData = await threadResponse.json();
+
+      setPreviousChats(threadData);
+      setNewChat(false);   // 🔥 VERY IMPORTANT
     }
+  };
+
+  initialize();
+}, []);
+
+useEffect(() => {
+  getAllthread();}
+)
+
+//   const savedId = localStorage.getItem("currentThreadId");
+
+//   if (savedId) {
+//     setCurrThreadId(savedId);
+//     changeThreadId(savedId);
+//   }
+// }, []);
+
+    // useEffect(()=>{
+    //   getAllthread()
+    // },[]) //we remove currThreadId
+    
+// useEffect(() => {
+//   const initialize = async () => {
+//     try {
+//       const response = await fetch("http://localhost:8080/api/thread");
+//       const res = await response.json();
+
+//       const filterdata = res.map(thread => ({
+//         threadId: thread.threadId,
+//         title: thread.title
+//       }));
+
+//       setAllThreads(filterdata);
+
+//       const savedId = localStorage.getItem("currentThreadId");
+
+//       if (savedId) {
+//         setCurrThreadId(savedId);
+
+//         const threadResponse = await fetch(
+//           `http://localhost:8080/api/thread/${savedId}`
+//         );
+
+//         const threadData = await threadResponse.json();
+//         setPreviousChats(threadData);
+//       }
+
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+
+//   initialize();
+// }, []);
+
+    // const createNewchat=()=>{
+    //   setNewChat(true);
+    //   setPrompt("");
+    //   setReply(null);
+    //   setCurrThreadId(uuidv1());
+    //   // setPrevChats([]);
+    //   setPreviousChats([]);
+
+
+    // }
+//     const createNewchat = () => {
+//   setNewChat(true);
+//   setPrompt("");
+//   setReply(null);
+
+//   const newId = uuidv1();
+//   setCurrThreadId(newId);
+//   setPreviousChats([]);
+
+//   localStorage.setItem("currentThreadId", newId);
+// };
+
+const createNewchat = () => {
+  const newId = uuidv1();
+
+  setNewChat(true);
+  setPrompt("");
+  setReply(null);
+  setCurrThreadId(newId);
+  setPreviousChats([]);
+
+  localStorage.setItem("currentThreadId", newId);
+};
     //  const changeThreadId=async(newthreadId)=>{
     //     setCurrThreadId(newthreadId);
     //      localStorage.setItem("currentThreadId", newthreadId);

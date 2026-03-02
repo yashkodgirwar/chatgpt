@@ -1,4 +1,4 @@
-import { v1 as uuidv1 } from "uuid";
+// import { v1 as uuidv1 } from "uuid";
 import "./ChatWindow.css";
 import Chat from "./Chat";
 import { Mycontext } from "./MyContext";
@@ -52,49 +52,99 @@ function ChatWindow(){
 //         console.log("threadId:", currThreadId);
 //         console.log("message:", prompt);
 //     }
-const getReply = async () => {
-  let activeThreadId = currThreadId;
+// const getReply = async () => {
+//   let activeThreadId = currThreadId;
 
-  if (!activeThreadId) {
-    activeThreadId = uuidv1();
-    setCurrThreadId(activeThreadId);
+//   // if (!activeThreadId) {
+//   //   // activeThreadId = uuidv1();
+//   //   setCurrThreadId(activeThreadId);
+//   // }
+
+//   setLoading(true);
+//   setNewChat(false);
+
+//   const options = {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       message: prompt,
+//       threadId: activeThreadId,  // ✅ use correct value
+//     }),
+//   };
+
+//   try {
+//     const response = await fetch(
+//       "http://localhost:8080/api/chat",
+//       options
+//     );
+//     const res = await response.json();
+//     setReply(res.reply);
+//   } catch (err) {
+//     console.log(err);
+//   }
+
+//   setLoading(false);
+
+//   console.log("threadId:", activeThreadId);
+//   console.log("message:", prompt);
+// };
+
+const getReply = async () => {
+  if (!prompt.trim()) return;
+
+  if (!currThreadId) {
+    alert("Please click New Chat or select a chat first");
+    return;
   }
 
   setLoading(true);
   setNewChat(false);
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: prompt,
-      threadId: activeThreadId,  // ✅ use correct value
-    }),
-  };
-
   try {
     const response = await fetch(
       "http://localhost:8080/api/chat",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          threadId: currThreadId,
+          message: prompt,
+        }),
+      }
     );
+
     const res = await response.json();
-    setReply(res.reply);
+
+    if (res.reply) {
+      setReply(res.reply);
+    }
+
   } catch (err) {
     console.log(err);
   }
 
   setLoading(false);
-
-  console.log("threadId:", activeThreadId);
-  console.log("message:", prompt);
 };
-useEffect(() => {
-  if (!currThreadId) {
-    setCurrThreadId(uuidv1());
-  }
-}, []);
+
+
+
+
+
+
+
+
+
+
+
+// useEffect(() => {
+//   if (!currThreadId) {
+//     setCurrThreadId(uuidv1());
+//   }
+// }, []);
     //Append new chat to previous chats
     useEffect(()=>{
      if(prompt && reply){

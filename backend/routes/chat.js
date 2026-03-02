@@ -171,6 +171,47 @@ router.delete("/thread/:threadId", async (req, res) => {
 
 
 
+// router.post("/chat", async (req, res) => {
+//   const { threadId, message } = req.body;
+
+//   if (!threadId || !message) {
+//     return res.status(400).json({ error: "Missing required fields" });
+//   }
+//     if (!thread) {
+//       thread = new Thread({
+//         threadId,
+//         title: message,
+//         messages: [],
+//       });
+//     }
+//   try {
+//     let thread = await Thread.findOne({ threadId });
+
+//     // 🔴 Important change
+//     if (!thread) {
+//       return res.status(404).json({ error: "Thread does not exist" });
+//     }
+
+//     thread.messages.push({ role: "user", content: message });
+
+//     const assistantReply = await getOpenAIAPIResponse(message);
+
+//     thread.messages.push({
+//       role: "assistant",
+//       content: assistantReply,
+//     });
+
+//     thread.updatedAt = new Date();
+//     await thread.save();
+
+//     res.json({ reply: assistantReply });
+
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
 router.post("/chat", async (req, res) => {
   const { threadId, message } = req.body;
 
@@ -181,9 +222,13 @@ router.post("/chat", async (req, res) => {
   try {
     let thread = await Thread.findOne({ threadId });
 
-    // 🔴 Important change
+    // 🔥 UUID system: if not found, CREATE
     if (!thread) {
-      return res.status(404).json({ error: "Thread does not exist" });
+      thread = new Thread({
+        threadId,
+        title: message,
+        messages: [],
+      });
     }
 
     thread.messages.push({ role: "user", content: message });
@@ -207,6 +252,4 @@ router.post("/chat", async (req, res) => {
 });
 
 
-
-
-    export default router;    
+   export default router;    
