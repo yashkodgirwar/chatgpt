@@ -4,6 +4,7 @@ import Chat from "./Chat";
 import { Mycontext } from "./MyContext";
 import { useContext, useState, useEffect } from "react";
 import {ScaleLoader} from "react-spinners"
+import { useUser } from "@clerk/clerk-react";
 function ChatWindow(){
     // const {prompt,setPrompt,reply,setReply,currThreadId,prevchats,setPrevChats,setNewChat}=useContext(Mycontext);
     const {
@@ -19,6 +20,15 @@ function ChatWindow(){
 } = useContext(Mycontext);
     const[loading,setLoading]=useState(false);
     const [isOpen,setIsOpen]=useState(false);
+
+    const { user } = useUser();
+
+useEffect(() => {
+  if (user) {
+    console.log(user.id);
+    console.log(user.primaryEmailAddress?.emailAddress);
+  }
+}, [user]);
 //     const getReply =async()=>{
 
 //         if (!currThreadId) {
@@ -186,19 +196,21 @@ const handleprofileclick= ()=>{
             </div>
             {
                 isOpen && 
-                <div className="dropDown">
+                <div className="dropdown">
+                    <div className="dropDownItem"><i className="fa-regular fa-gear"></i>Setting</div>
 
-                    <div className="dropDownItem">  <i className="fa-solid fa-gear"></i> Setting</div>
-                    <div className="dropDownItem"> <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan</div>
-                    <div className="dropDownItem"><i className="fa-solid fa-right-from-bracket"></i> Log out</div>
+                    <div className="dropDownItem"><i className="fa-solid fa-cloud-arrow-up"></i>Upgrade plan</div>
+                    
+                    <div className="dropDownItem"><i className="fa-regular fa-arrow-right-from-bracket"></i>Log out</div>
 
-
-
-
+                     
 
                     
                 </div>
+
+                
             }
+            
             <Chat></Chat>
             <ScaleLoader color="#fff" loading={loading}>
 

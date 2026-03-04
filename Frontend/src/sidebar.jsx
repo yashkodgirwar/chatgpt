@@ -2,6 +2,7 @@ import "./SidebarStyle.css";
 import { useContext, useEffect } from "react";
 import {Mycontext} from "./MyContext";
 import{v1 as uuidv1} from "uuid";
+import { useAuth } from "@clerk/clerk-react";
 
 
 
@@ -17,52 +18,105 @@ function Sidebar(){
   setReply,
   setPreviousChats     
 } = useContext(Mycontext);
+// const { getToken } = useAuth();
 
-   const getAllthread=async()=>{
-      try{
-         const response =await fetch("http://localhost:8080/api/thread");
-         const res= await response.json();
-         const filterdata= res.map(thread=>({threadId: thread.threadId,title:thread.title}));
-         setAllThreads(filterdata)
-      }catch(err){
-         console.log(err);
-      }
+//    const getAllthread=async()=>{
+//       try{
+//         //  const response =await fetch("http://localhost:8080/api/thread");
+//          const res= await response.json();
+//          const filterdata= res.map(thread=>({threadId: thread.threadId,title:thread.title}));
+//          setAllThreads(filterdata)
+//       }catch(err){
+//          console.log(err);
+//       }
 
-   };
-useEffect(() => {
-  const initialize = async () => {
-    const response = await fetch("http://localhost:8080/api/thread");
-    const res = await response.json();
+//    };
+const { getToken } = useAuth();
 
-    const filterdata = res.map(thread => ({
+const getAllthread = async () => {
+  try {
+    const token = await getToken();
+
+    const response = await fetch("http://localhost:8080/api/thread", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    const filterdata = data.map(thread => ({
       threadId: thread.threadId,
-      title: thread.title
+      title: thread.title,
     }));
 
     setAllThreads(filterdata);
 
-    const savedId = localStorage.getItem("currentThreadId");
+  } catch (err) {
+    console.log("Thread fetch error:", err);
+  }
+};
+// useEffect(() => {
+//   const initialize = async () => {
+//     const response = await fetch("http://localhost:8080/api/thread");
+//     const res = await response.json();
 
-    if (savedId) {
-      setCurrThreadId(savedId);
+//     const filterdata = res.map(thread => ({
+//       threadId: thread.threadId,
+//       title: thread.title
+//     }));
 
-      const threadResponse = await fetch(
-        `http://localhost:8080/api/thread/${savedId}`
-      );
+//     setAllThreads(filterdata);
 
-      const threadData = await threadResponse.json();
+//     const savedId = localStorage.getItem("currentThreadId");
 
-      setPreviousChats(threadData);
-      setNewChat(false);   // 🔥 VERY IMPORTANT
+//     if (savedId) {
+//       setCurrThreadId(savedId);
+
+//       const threadResponse = await fetch(
+//         `http://localhost:8080/api/thread/${savedId}`
+//       );
+
+//       const threadData = await threadResponse.json();
+
+//       setPreviousChats(threadData);
+//       setNewChat(false);   // 🔥 VERY IMPORTANT
+//     }
+//   };
+
+//   initialize();
+// }, []);
+useEffect(() => {
+  const initialize = async () => {
+    try {
+      const token = await getToken();
+
+      const response = await fetch("http://localhost:8080/api/thread", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      const filterdata = data.map(thread => ({
+        threadId: thread.threadId,
+        title: thread.title,
+      }));
+
+      setAllThreads(filterdata);
+
+    } catch (err) {
+      console.log("Init error:", err);
     }
   };
 
   initialize();
 }, []);
 
-useEffect(() => {
-  getAllthread();}
-)
+// useEffect(() => {
+//   getAllthread();}
+// )
 
 //   const savedId = localStorage.getItem("currentThreadId");
 
@@ -158,14 +212,30 @@ const createNewchat = () => {
     //       console.log(err);
     //     }
     //  }
+
+   const token =  getToken();
+
+
+
+
     const changeThreadId = async (newthreadId) => {
   setCurrThreadId(newthreadId);
   localStorage.setItem("currentThreadId", newthreadId);
 
   try {
+    
+   const token = await getToken();
+    // const response = await fetch(
+    //   `http://localhost:8080/api/thread/${newthreadId}`
+    // );
     const response = await fetch(
-      `http://localhost:8080/api/thread/${newthreadId}`
-    );
+  `http://localhost:8080/api/thread/${newthreadId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
     const res = await response.json();
     setPreviousChats(res);
     setReply(null);
@@ -246,11 +316,20 @@ const deleteThread = async (threadId) => {
   console.log("Frontend sending threadId:", threadId);
 
   try {
-    const response = await fetch(
-      `http://localhost:8080/api/thread/${threadId}`,
-      { method: "DELETE" }
-    );
-
+    const token = await getToken();
+    // const response = await fetch(
+    //   `http://localhost:8080/api/thread/${threadId}`,
+    //   { method: "DELETE" }
+    // );
+const response = await fetch(
+  `http://localhost:8080/api/thread/${threadId}`,
+  {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
     console.log("Status:", response.status);
 
     setAllThreads(prev =>

@@ -36,20 +36,77 @@
 
 // export default App
 
-import './App.css'
-import Sidebar from './sidebar.jsx'
-import ChatWindow from './ChatWindow.jsx'
-import MyContextProvider from './MyContext'
+// import './App.css'
+// import Sidebar from './sidebar.jsx'
+// import ChatWindow from './ChatWindow.jsx'
+// import MyContextProvider from './MyContext'
+
+// function App() {
+//   return (
+//     <MyContextProvider>
+//       <div className="app">
+//         <Sidebar />
+//         <ChatWindow />
+//       </div>
+//     </MyContextProvider>
+//   )
+// }
+// import {
+//   SignedIn,
+//   SignedOut,
+//   SignIn,
+//   UserButton
+// } from "@clerk/clerk-react";
+
+// function App() {
+//   return (
+//     <>
+//       <SignedOut>
+//         <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+//           <SignIn />
+//         </div>
+//       </SignedOut>
+
+//       <SignedIn>
+//         <div>
+//           <UserButton afterSignOutUrl="/" />
+//           <ChatWindow />
+//         </div>
+//       </SignedIn>
+//     </>
+//   );
+// }
+import {
+  SignedIn,
+  SignedOut,
+  SignIn,
+  UserButton
+} from "@clerk/clerk-react";
+
+import MyContextProvider from "./MyContext";
+import Sidebar from "./sidebar";
+import ChatWindow from "./ChatWindow";
 
 function App() {
   return (
-    <MyContextProvider>
-      <div className="app">
-        <Sidebar />
-        <ChatWindow />
-      </div>
-    </MyContextProvider>
-  )
+    <>
+      <SignedOut>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+          <SignIn />
+        </div>
+      </SignedOut>
+
+      <SignedIn>
+        <MyContextProvider>
+          <div className="app">
+            <Sidebar />
+            <ChatWindow />
+          </div>
+        </MyContextProvider>
+      </SignedIn>
+    </>
+  );
 }
+
 
 export default App
